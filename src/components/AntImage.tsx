@@ -1,17 +1,17 @@
 import React from 'react';
-import { Image, ImageSourcePropType, ImageStyle, StyleProp, View } from 'react-native';
+import { Image, ImageProps, ImageSourcePropType, ImageStyle, StyleProp, View } from 'react-native';
 
 // import { Container } from './styles';
 
 export interface AntImageInterface {
     path: ImageSourcePropType,
-    style: StyleProp<ImageStyle>,
+    style: ImageStyle,
 }
 
-const AntImage = ({ path, style }: AntImageInterface): JSX.Element => {
+const AntImage = ({ path, style }: AntImageInterface & ImageProps): JSX.Element => {
     return (
-        <View>
-            <Image source={path} style={[style]} />;
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Image source={path} style={style} />
         </View>
     )
 }
