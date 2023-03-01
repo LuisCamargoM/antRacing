@@ -13,7 +13,7 @@ export interface AntButtonInterface {
 
 const AntButton = ({ loading, label, styleLabel, styleButton, ...props }: AntButtonInterface & TouchableOpacityProps): JSX.Element => {
     return (
-        <TouchableOpacity disabled={loading} onPress={props.onPress} style={styleButton}>
+        <TouchableOpacity disabled={loading} onPress={props.onPress} style={[{ justifyContent: 'center', alignItems: 'center' }, styleButton]}>
             {loading ? <ActivityIndicator size={'small'} color='white' />
                 :
                 <AntText label={label} style={styleLabel} />

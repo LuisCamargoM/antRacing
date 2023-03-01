@@ -1,15 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Dimensions, Alert, Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import AntButton from '../../components/AntButton';
 import AntImage from '../../components/AntImage';
 import AntText from '../../components/AntText';
+import { useScreenSize } from '../../hooks/useScreenSize';
 import { Container } from '../StatisticScreen/styles';
 
 // import { Container } from './styles';
 
 const InitialScreen: React.FC = () => {
-    const { width, scale } = Dimensions.get('window');
+    const { width, scale } = useScreenSize();
     const { buttonStyle, textButtonStyle } = styles;
     const navigation = useNavigation();
     const loading = false;

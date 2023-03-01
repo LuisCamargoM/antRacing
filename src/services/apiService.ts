@@ -1,17 +1,25 @@
-import { FetchContextInterface } from "../context/Fetcher";
+import axios, { AxiosRequestConfig } from 'axios';
+import { ants, Ants } from '../utils/mockeData';
 
-enum ENUM_TYPE {
-    REST = 'REST',
-    GRAPHQL = 'GRAPHQL'
+const BASE_URL = 'https://sg-ants-test.herokuapp.com';
+
+async function fetchData<T>(url: string, options?: AxiosRequestConfig): Promise<any> {
+    const config: AxiosRequestConfig = {
+        ...options,
+        withCredentials: true,
+        baseURL: BASE_URL,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+        },
+    };
+
+    // try {
+    const response = await axios.get<T>(url, config);
+    console.log(response)
+    // return ants
+    // } catch (error) {
+    //     console.log(`ERROR: ${JSON.stringify(error)}`)
+    // }
 }
-
-async function fetchData(): Promise<any> {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve({ he: 'das' })
-        }, 5000)
-    });
-
-}
-
 export const apiService = { fetchData };
