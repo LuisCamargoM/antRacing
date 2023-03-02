@@ -1,23 +1,26 @@
 import React from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import AntText from '../../components/AntText';
-import { useScreenSize } from '../../hooks/useScreenSize';
 import ItemsList from './components/ItemsList/ItemsList';
-import { Container } from './styles';
+import { Container, ListContainer, StatusDataView } from './styles';
 
 const Statistics: React.FC = () => {
-    const { width } = useScreenSize();
+    const { lighterText } = styles;
     return (
         <Container>
-            <View style={{ marginTop: 10, paddingHorizontal: 15, width, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <AntText label='Calculation Status' style={{ textTransform: 'capitalize', fontWeight: '200' }} />
+            <StatusDataView>
+                <AntText label='Calculation Status' style={lighterText} />
                 <AntText label='Not Finished yet!' />
-            </View>
-            <View style={{ flex: 1, paddingHorizontal: 15, width, flexDirection: 'row', justifyContent: 'space-between' }}>
+            </StatusDataView>
+            <ListContainer>
                 <ItemsList />
-            </View>
+            </ListContainer>
         </Container>
     );
 }
+
+const styles = StyleSheet.create({
+    lighterText: { textTransform: 'capitalize', fontWeight: '300' }
+});
 
 export default Statistics;

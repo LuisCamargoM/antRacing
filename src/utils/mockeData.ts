@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from "react-native"
 
-interface Ant {
+export interface Ant {
     name: string,
     length: number,
     weight: number,
@@ -39,3 +39,33 @@ export const { ants }: Ants = {
         }
     ]
 }
+
+
+export const statisticInfo = [
+    {
+        image: require('../../assets/images/0_ant.png'),
+        color: '#3000EB',
+        timeValue: 0.2231
+    },
+    {
+        image: require('../../assets/images/1_ant.png'),
+        color:'#53F56F',
+        timeValue: 0.11231
+    },
+    {
+        image: require('../../assets/images/2_ant.png'),
+        color:'#EB7B00',
+        timeValue: 0.8731
+    },
+    {
+        image: require('../../assets/images/3_ant.png'),
+        color:'#EB0000',
+        timeValue: 0.7821
+    },
+    {
+        image: require('../../assets/images/4_ant.png'),
+        color: '#B653F5',
+        timeValue: 0.6231
+    },
+
+]

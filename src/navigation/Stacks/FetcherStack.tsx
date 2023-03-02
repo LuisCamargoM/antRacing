@@ -8,7 +8,7 @@ const Fetcher = createNativeStackNavigator();
 
 export const FetcherStack = (): JSX.Element => {    
     return (
-        <Fetcher.Navigator>
+        <Fetcher.Navigator initialRouteName='FetcherStack0'>
             <Fetcher.Screen
                 name="InitialScreen"
                 component={InitialScreen}

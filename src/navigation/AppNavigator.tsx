@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
 import { client } from "../context/ApolloProvider";
+import { FetchProvider } from "../context/Fetcher";
 import { useFetchContext } from "../hooks/useFetchContext";
 import { FetcherStack } from "./Stacks/FetcherStack";
 import { MainStack } from "./Stacks/MainStack";
@@ -13,7 +14,7 @@ export const AppNavigator = () => {
     return (
         <ApolloProvider client={clientContext}>
             <NavigationContainer>
-                {!!wasFetched ? <FetcherStack /> : <MainStack />}
+                {!wasFetched ? <FetcherStack /> : <MainStack />}
             </NavigationContainer>
         </ApolloProvider>
     )
