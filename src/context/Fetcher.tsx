@@ -1,10 +1,7 @@
-import { useQuery } from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
-import { GET_ANTS } from '../graphql/queries';
 import { apiService } from '../services/apiService';
-import { Ants, ants } from '../utils/mockeData';
 
 export interface FetchContextInterface {
     wasFetched: boolean | undefined,

@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import AntButton from '../../components/AntButton';
 import AntImage from '../../components/AntImage';
 import AntText from '../../components/AntText';
@@ -10,34 +9,31 @@ import { useFetchContext } from '../../hooks/useFetchContext';
 import { useScreenSize } from '../../hooks/useScreenSize';
 import { Container } from '../StatisticScreen/styles';
 
-// import { Container } from './styles';
+const { width, scale } = useScreenSize();
 
 const InitialScreen: React.FC = () => {
-    const { buttonStyle, textButtonStyle } = styles;
-    const { width, scale } = useScreenSize();
+    const { buttonStyle, textButtonStyle, imageContainer, imageView, loadingText } = styles;
+    const { fetchData } = useFetchContext();
 
     const [loading, setLoading] = React.useState<boolean>(false);
     const { data } = useQuery(GET_ANTS);
-    const { fetchData } = useFetchContext();
-    const handlePress = (): void => {
+
+    const handlePress = async (): Promise<void> => {
         setLoading(true);
-        fetchData().then(() => {
+        await fetchData().then(() => {
             setLoading(false);
         });
     }
 
-    React.useEffect(() => {
-
-    }, [])
 
     return (
         <Container>
-            <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+            <View style={imageContainer}>
                 <AntImage
-                    style={{ width: width / scale, height: width / scale, opacity: loading ? 0.5 : 1 }}
+                    style={[imageView, { opacity: loading ? 0.5 : 1 }]}
                     path={require('../../../assets/images/ant_head.png')}
                 />
-                {loading && <AntText label='Loading' style={{ marginTop: 20, textTransform: 'capitalize' }} />}
+                {loading && <AntText label={``} style={loadingText} loading={loading} />}
             </View>
             <AntButton
                 loading={loading}
@@ -51,6 +47,9 @@ const InitialScreen: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    imageContainer: { flex: 1, justifyContent: 'center', flexDirection: 'column', alignItems: 'center' },
+    imageView: { width: width / scale, height: width / scale },
+    loadingText: { marginTop: 20, textTransform: 'capitalize' },
     buttonStyle: {
         width: '80%',
         height: 50,
@@ -66,4 +65,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     }
 })
+
 export default InitialScreen;

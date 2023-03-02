@@ -10,9 +10,8 @@ import { MainStack } from "./Stacks/MainStack";
 
 export const AppNavigator = () => {
     const { wasFetched } = useFetchContext();
-    const clientContext = client;
     return (
-        <ApolloProvider client={clientContext}>
+        <ApolloProvider client={client}>
             <NavigationContainer>
                 {!wasFetched ? <FetcherStack /> : <MainStack />}
             </NavigationContainer>
