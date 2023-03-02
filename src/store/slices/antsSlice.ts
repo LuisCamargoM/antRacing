@@ -8,7 +8,7 @@ export interface AntState {
     weight: number,
     image?: ImageSourcePropType,
     color: string,
-    likelihoodOfAntWinng?: number,
+    likelihoodOfAntWinning?: number,
     statusFetched?: string,
     __typename?: string
 }
@@ -37,15 +37,16 @@ const antsSlice = createSlice({
     initialState,
     reducers: {
         setAntsInfo: (state, action) => {
-            // console.log(JSON.stringify(action, null, 2))
             state.ants = action.payload;
-            // console.log(JSON.stringify(state, null, 2))
         },
-        setDataInProgress: (state, action) => {
-            state.inProgress = action.payload.inProgress;
+        setDataInProgress: (state) => {
+            state.inProgress = true;
+            state.status = 'Calculating ....'
         },
-        setDataCompleted: (state, action) => {
-            state.completed = action.payload.completed;
+        setDataCompleted: (state) => {
+            state.completed = true;
+            state.inProgress = false;
+            state.status = 'Calculation Finished!'
         },
         setDataStatus: (state, action) => {
             state.status = action.payload.message;

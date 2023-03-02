@@ -9,10 +9,11 @@ import AntText from '../../../../components/AntText';
 import { useScreenSize } from '../../../../hooks/useScreenSize';
 import { ContainerItemList } from './styles';
 
-import { useSelector } from 'react-redux';
-import { AntState, selectAnts } from '../../../../store/slices/antsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AntState, selectAnts, selectCompletedStatus, selectInProgressStatus, setAntsInfo, setDataCompleted, setDataInProgress } from '../../../../store/slices/antsSlice';
 
 import ProgressBarItem from '../ProgressBarItem/ProgressBarItem';
+import { modelService } from '../../../../services/modelService';
 
 const { width, scale } = useScreenSize();
 
@@ -20,11 +21,43 @@ const ItemsList: React.FC = () => {
     const [antsData, setAntsData] = React.useState<AntState[]>();
     const [loading, setLoading] = React.useState<boolean>(false);
 
+    const dispatch = useDispatch();
     const ants = useSelector(selectAnts);
+    const inProgress = useSelector(selectInProgressStatus);
+    const completed = useSelector(selectCompletedStatus);
+
     interface Item {
         item: AntState,
         index: number
     }
+
+    const isCalculating = (): boolean => inProgress && !completed;
+
+    const calculateOdds = (actualState: AntState[]) => {
+        actualState.map((ant: AntState, i: number) => {
+            actualState[i].statusFetched = 'Calculating...';
+            dispatch(setAntsInfo(actualState));
+            const responseCallback = (likelihoodOfAntWinning: number) => {
+                actualState[i].likelihoodOfAntWinning = likelihoodOfAntWinning;
+                actualState[i].statusFetched = 'Calculated';
+                dispatch(setAntsInfo(actualState))
+                setAntsData(actualState)
+            };
+            modelService.getAntWinLikelihoood()(responseCallback);
+        })
+    }
+
+    const startCalculation = async () => {
+        dispatch(setDataInProgress())
+        calculateOdds(ants);
+        dispatch(setDataCompleted())
+    }
+    const handleRace = async () => {
+        await startCalculation().then(() => {
+            dispatch(setDataCompleted)
+        })
+
+    };
 
     const Item = ({ item, index }: Item) => {
         const { itemView, itemFirstColumn, itemImageLabel, itemImageView, } = styles;
@@ -35,7 +68,7 @@ const ItemsList: React.FC = () => {
                     <AntText label={item?.statusFetched} style={itemImageLabel} />
                 </View>
                 <View>
-                    <ProgressBarItem name={item?.name} timeValue={item?.likelihoodOfAntWinng} colorItem={item?.color} />
+                    <ProgressBarItem name={item?.name} timeValue={item?.likelihoodOfAntWinning} colorItem={item?.color} />
                 </View>
             </View>
         )
@@ -47,19 +80,16 @@ const ItemsList: React.FC = () => {
             <View style={footerView}>
                 <AntButton
                     onPress={handleRace}
-                    label='Start Racing'
+                    label={isCalculating() ? 'Running' : 'START RACING'}
                     styleLabel={textButtonStyle}
                     styleButton={buttonStyle}
+                    loading={isCalculating()}
                 />
             </View>
         )
     }
 
-    const handleRace = () => {
-        // Calculate en paralelo os valores
-        // Ir atualizando a ordem
-        // Atulaizar o status
-    };
+
 
     React.useEffect
         (() => {
@@ -67,6 +97,7 @@ const ItemsList: React.FC = () => {
                 let ascending = ants.slice().sort(compare);
                 setAntsData(ascending)
             }
+
         }, [ants]);
 
     return (
