@@ -7,7 +7,6 @@ export const ContainerProgressBarItem = styled.View`
   width: 100%;
   flex-direction: column;
   justify-content:center;
-  /* background-color: aliceblue; */
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 10px;

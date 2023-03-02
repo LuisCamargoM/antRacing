@@ -1,8 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, ImageStyle, StyleProp, StyleSheet, TextStyle, TouchableOpacity, TouchableOpacityProps, View, ViewProps, ViewStyle } from 'react-native';
+import { ActivityIndicator, StyleProp, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 import AntText from './AntText';
-
-// import { Container } from './styles';
 
 export interface AntButtonInterface {
     label: string,

@@ -1,8 +1,5 @@
 import React from 'react';
-import { Animated, ImageStyle, StyleProp, StyleSheet, Text, TextProps, TextStyle, View } from 'react-native';
-
-// import { Container } from './styles';
-
+import { Animated, StyleProp, StyleSheet, Text, TextProps, TextStyle, View } from 'react-native';
 
 export interface AntTextInterface {
     label: string | undefined,
@@ -10,7 +7,7 @@ export interface AntTextInterface {
     loading?: boolean
 }
 
-const AntText = ({ label, style, loading, ...props }: TextProps & AntTextInterface): JSX.Element => {
+const AntText = ({ label, style, loading }: TextProps & AntTextInterface): JSX.Element => {
     const { loadingViewStyle, textStyle, textView } = styles;
     const LoadingDots = (): JSX.Element[] => {
         const dotCount = React.useRef(new Animated.Value(0)).current;
@@ -41,9 +38,7 @@ const AntText = ({ label, style, loading, ...props }: TextProps & AntTextInterfa
             });
 
             return (
-                <Animated.Text key={i} style={{ color: '#000', fontSize: 50, opacity, marginHorizontal: 2, }}>
-                    .
-                </Animated.Text>
+                <Animated.Text key={i} style={{ color: '#000', fontSize: 50, opacity, marginHorizontal: 2 }}>.</Animated.Text>
             )
         })
         return Dots;

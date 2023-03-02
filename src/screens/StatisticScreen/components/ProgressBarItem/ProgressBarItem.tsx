@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import AntText from '../../../../components/AntText';
 import { useScreenSize } from '../../../../hooks/useScreenSize';
 import { ContainerProgressBarItem } from './styles';

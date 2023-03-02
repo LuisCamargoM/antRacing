@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import React from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import AntButton from '../../components/AntButton';
 import AntImage from '../../components/AntImage';
@@ -24,15 +24,12 @@ const InitialScreen: React.FC = () => {
 
     const handlePress = async (): Promise<void> => {
         setLoading(true);
-        // console.log(data);
         await fetchData().then(() => {
             setLoading(false);
             const newAnts = modelService.formatData(data.ants);
             dispatch(setAntsInfo(newAnts));
-            // console.log(JSON.stringify(, null, 2));
         });
     }
-
 
     return (
         <Container>

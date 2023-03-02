@@ -1,16 +1,18 @@
 import React from 'react';
-import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, View } from 'react-native';
-import { useQuery } from '@apollo/client';
-import { GET_ANTS } from '../../../../graphql/queries';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+
+import { compare } from '../../../../utils/utils';
 import AntButton from '../../../../components/AntButton';
 import AntImage from '../../../../components/AntImage';
 import AntText from '../../../../components/AntText';
+
 import { useScreenSize } from '../../../../hooks/useScreenSize';
-import { Ant, statisticInfo } from '../../../../utils/mockeData';
 import { ContainerItemList } from './styles';
-import ProgressBarItem from '../ProgressBarItem/ProgressBarItem';
+
 import { useSelector } from 'react-redux';
 import { AntState, selectAnts } from '../../../../store/slices/antsSlice';
+
+import ProgressBarItem from '../ProgressBarItem/ProgressBarItem';
 
 const { width, scale } = useScreenSize();
 
@@ -26,7 +28,6 @@ const ItemsList: React.FC = () => {
 
     const Item = ({ item, index }: Item) => {
         const { itemView, itemFirstColumn, itemImageLabel, itemImageView, } = styles;
-        console.log(JSON.stringify(item, null, 2))
         return (
             <View key={index} style={itemView}>
                 <View style={itemFirstColumn}>
@@ -39,25 +40,26 @@ const ItemsList: React.FC = () => {
             </View>
         )
     }
+
     const Footer = () => {
         const { footerView, buttonStyle, textButtonStyle } = styles;
         return (
             <View style={footerView}>
                 <AntButton
-                    onPress={() => Alert.alert('Start racing')}
+                    onPress={handleRace}
                     label='Start Racing'
                     styleLabel={textButtonStyle}
-                    styleButton={buttonStyle} />
+                    styleButton={buttonStyle}
+                />
             </View>
         )
     }
 
-    function compare(a, b) {
-        if (a.likelihoodOfAntWinng > b.likelihoodOfAntWinng) return 1;
-        if (b.likelihoodOfAntWinng > a.likelihoodOfAntWinng) return -1;
-
-        return 0;
-    }
+    const handleRace = () => {
+        // Calculate en paralelo os valores
+        // Ir atualizando a ordem
+        // Atulaizar o status
+    };
 
     React.useEffect
         (() => {
@@ -72,12 +74,17 @@ const ItemsList: React.FC = () => {
             {loading ?
                 <ActivityIndicator size={'large'} />
                 :
-                antsData && antsData?.length ? (<FlatList
-                    keyExtractor={(item) => item.name}
-                    data={antsData}
-                    renderItem={Item}
-                    ListFooterComponent={Footer}
-                />) : (<AntText label='Empty data' />)
+                antsData && antsData?.length ?
+                    (
+                        <FlatList
+                            keyExtractor={(item) => item.name}
+                            data={antsData}
+                            renderItem={Item}
+                            ListFooterComponent={Footer}
+                        />
+                    ) : (
+                        <AntText label='Empty data' />
+                    )
             }
         </ContainerItemList>
     );

@@ -1,7 +1,5 @@
 import React from 'react';
-import { Image, ImageProps, ImageSourcePropType, ImageStyle, StyleProp, View } from 'react-native';
-
-// import { Container } from './styles';
+import { Image, ImageProps, ImageSourcePropType, ImageStyle, View } from 'react-native';
 
 export interface AntImageInterface {
     path: ImageSourcePropType | undefined,

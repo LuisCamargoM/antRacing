@@ -1,7 +1,4 @@
-import { useQuery } from '@apollo/client';
-import axios, { AxiosRequestConfig } from 'axios';
-import { GET_ANTS } from '../graphql/queries';
-import { Ant, ants, Ants, statisticInfo } from '../utils/mockeData';
+import { Ant, statisticInfo } from '../utils/mockeData';
 import merge from 'lodash';
 
 
