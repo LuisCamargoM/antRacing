@@ -16,7 +16,6 @@ export const FetchProvider: React.FC = ({ children }) => {
 
     const loadFromStorage = async (): Promise<void> => {
         const fetched = await AsyncStorage.getItem('@wasFetched');
-        console.log(JSON.stringify(fetched))
         if (fetched) setWasFetched(JSON.parse(fetched));
     }
 

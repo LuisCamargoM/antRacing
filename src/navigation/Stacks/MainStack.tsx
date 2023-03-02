@@ -12,6 +12,13 @@ export const MainStack = (): JSX.Element => {
     const { restartProcess } = useFetchContext();
     const { headerLeftButton, headerStyle } = styles;
 
+    const HeaderLeftComponent = (): JSX.Element => {
+        return (
+            <TouchableOpacity style={headerLeftButton} onPress={async (): Promise<void> => restartProcess()}>
+                <BackIcon />
+            </TouchableOpacity>
+        )
+    }
     return (
         <Main.Navigator initialRouteName='MainStack'>
             <Main.Screen
@@ -20,11 +27,7 @@ export const MainStack = (): JSX.Element => {
                 options={{
                     headerStyle,
                     headerTitle: (): JSX.Element => <AntText label='Ant Racing Statistics' />,
-                    headerLeft: (): JSX.Element => {
-                        return <TouchableOpacity style={headerLeftButton} onPress={async (): Promise<void> => restartProcess()}>
-                            <BackIcon />
-                        </TouchableOpacity>
-                    },
+                    headerLeft: (): JSX.Element => <HeaderLeftComponent />
                 }}
             />
         </Main.Navigator >

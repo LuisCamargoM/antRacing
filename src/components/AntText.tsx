@@ -5,7 +5,7 @@ import { Animated, ImageStyle, StyleProp, StyleSheet, Text, TextProps, TextStyle
 
 
 export interface AntTextInterface {
-    label: string,
+    label: string | undefined,
     style?: StyleProp<TextStyle>,
     loading?: boolean
 }

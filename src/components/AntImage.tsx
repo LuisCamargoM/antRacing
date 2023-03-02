@@ -4,7 +4,7 @@ import { Image, ImageProps, ImageSourcePropType, ImageStyle, StyleProp, View } f
 // import { Container } from './styles';
 
 export interface AntImageInterface {
-    path: ImageSourcePropType,
+    path: ImageSourcePropType | undefined,
     style: ImageStyle,
 }
 

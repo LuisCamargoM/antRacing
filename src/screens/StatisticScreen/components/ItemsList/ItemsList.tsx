@@ -9,27 +9,32 @@ import { useScreenSize } from '../../../../hooks/useScreenSize';
 import { Ant, statisticInfo } from '../../../../utils/mockeData';
 import { ContainerItemList } from './styles';
 import ProgressBarItem from '../ProgressBarItem/ProgressBarItem';
+import { useSelector } from 'react-redux';
+import { AntState, selectAnts } from '../../../../store/slices/antsSlice';
 
 const { width, scale } = useScreenSize();
 
 const ItemsList: React.FC = () => {
-    const { data, loading } = useQuery(GET_ANTS);
-    const [antsData, setAntsData] = React.useState();
+    const [antsData, setAntsData] = React.useState<AntState[]>();
+    const [loading, setLoading] = React.useState<boolean>(false);
+
+    const ants = useSelector(selectAnts);
     interface Item {
-        item: Ant,
+        item: AntState,
         index: number
     }
 
     const Item = ({ item, index }: Item) => {
         const { itemView, itemFirstColumn, itemImageLabel, itemImageView, } = styles;
+        console.log(JSON.stringify(item, null, 2))
         return (
             <View key={index} style={itemView}>
                 <View style={itemFirstColumn}>
-                    <AntImage path={statisticInfo[index].image} style={itemImageView} />
-                    <AntText label={`status ...`} style={itemImageLabel} />
+                    <AntImage path={item?.image} style={itemImageView} />
+                    <AntText label={item?.statusFetched} style={itemImageLabel} />
                 </View>
                 <View>
-                    <ProgressBarItem name={item.name} timeValue={item.length} colorItem={statisticInfo[index].color} />
+                    <ProgressBarItem name={item?.name} timeValue={item?.likelihoodOfAntWinng} colorItem={item?.color} />
                 </View>
             </View>
         )
@@ -48,27 +53,26 @@ const ItemsList: React.FC = () => {
     }
 
     function compare(a, b) {
-        if (a.length > b.length) return 1;
-        if (b.length > a.length) return -1;
+        if (a.likelihoodOfAntWinng > b.likelihoodOfAntWinng) return 1;
+        if (b.likelihoodOfAntWinng > a.likelihoodOfAntWinng) return -1;
 
         return 0;
     }
-    React.useEffect(() => {
-        if (data) {
-            const { ants } = data;
-            var ascending = ants.slice().sort(compare);
-            console.log(ascending)
-            setAntsData(ascending);
-        }
-    }, [data]);
 
+    React.useEffect
+        (() => {
+            if (ants.length) {
+                let ascending = ants.slice().sort(compare);
+                setAntsData(ascending)
+            }
+        }, [ants]);
 
     return (
         <ContainerItemList>
             {loading ?
                 <ActivityIndicator size={'large'} />
                 :
-                antsData ? (<FlatList
+                antsData && antsData?.length ? (<FlatList
                     keyExtractor={(item) => item.name}
                     data={antsData}
                     renderItem={Item}

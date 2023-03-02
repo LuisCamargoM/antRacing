@@ -7,14 +7,15 @@ import { ContainerProgressBarItem } from './styles';
 const { width, scale } = useScreenSize();
 
 interface ProgressItem {
-    colorItem: string,
-    name: string,
-    timeValue: number
+    colorItem: string | undefined,
+    name: string | undefined,
+    timeValue: number | undefined
 }
 const ProgressBarItem = ({ colorItem, name, timeValue }: ProgressItem): JSX.Element => {
     const [progress, setProgress] = React.useState(0);
     const progressAnim = React.useRef(new Animated.Value(0)).current;
     const { progressContainer, progressView, progressText, progressName } = styles;
+
     const animateProgress = () => {
         Animated.spring(progressAnim, {
             toValue: progress,
@@ -26,7 +27,7 @@ const ProgressBarItem = ({ colorItem, name, timeValue }: ProgressItem): JSX.Elem
 
     React.useEffect(() => {
         animateProgress();
-        setProgress((timeValue * 100))
+        setProgress(((timeValue ?? 0) * 100))
         return () => { };
     }, [progress])
 
@@ -35,7 +36,7 @@ const ProgressBarItem = ({ colorItem, name, timeValue }: ProgressItem): JSX.Elem
             <View style={progressContainer}>
                 <View style={{ flexGrow: 1, flexDirection: 'row', marginLeft: 20 }}>
                     <AntText label={`Name: ${name}`} style={progressName} />
-                    <AntText label={`${timeValue} s`} style={progressText} />
+                    <AntText label={`${timeValue ?? 0.0} s`} style={progressText} />
                 </View>
                 <View style={progressView}>
                     <Animated.View
@@ -59,7 +60,7 @@ const ProgressBarItem = ({ colorItem, name, timeValue }: ProgressItem): JSX.Elem
 
 const styles = StyleSheet.create({
     progressContainer: { width: width / 1.5, flexDirection: 'column', justifyContent: 'center' },
-    progressName: { fontSize: 10, flex: 1, width: 190, color:'gray', textTransform:'capitalize' },
+    progressName: { fontSize: 10, flex: 1, width: 190, color: 'gray', textTransform: 'capitalize' },
     progressText: { alignSelf: 'flex-end', marginRight: 10, textTransform: 'lowercase' },
     progressView: { flex: 1, height: 20, justifyContent: 'center', backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#000' },
     progress: { marginLeft: 2, height: 15, borderRadius: 10, justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }
