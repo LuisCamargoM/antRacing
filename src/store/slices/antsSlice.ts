@@ -47,7 +47,7 @@ const antsSlice = createSlice({
             } else {
                 if (state.counter !== 0 && state.counter < 5) {
                     state.inProgress = true;
-                    
+                    state.completed = false;
                     state.status = 'Calculating ....'
                 }
             }
