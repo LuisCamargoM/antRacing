@@ -40,13 +40,14 @@ const antsSlice = createSlice({
     reducers: {
         setAntsInfo: (state, action) => {
             state.ants = action.payload;
-            if (state.counter >= 5) {
+            if (state.counter === 4) {
                 state.completed = true;
                 state.inProgress = false;
                 state.status = 'Calculation Finished!'
             } else {
-                if (state.counter !== 0 && state.counter > 0 && state.counter < 5) {
+                if (state.counter !== 0 && state.counter < 5) {
                     state.inProgress = true;
+                    
                     state.status = 'Calculating ....'
                 }
             }

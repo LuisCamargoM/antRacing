@@ -29,7 +29,7 @@ const ProgressBarItem = ({ colorItem, name, timeValue }: ProgressItem): JSX.Elem
         animateProgress();
         setProgress((((timeValue) ?? 0) * 100))
         return () => { };
-    }, [progress,timeValue])
+    }, [progress, timeValue])
 
     return (
         <ContainerProgressBarItem>
@@ -60,7 +60,7 @@ const ProgressBarItem = ({ colorItem, name, timeValue }: ProgressItem): JSX.Elem
 
 const styles = StyleSheet.create({
     progressContainer: { width: width / 1.5, flexDirection: 'column', justifyContent: 'center' },
-    progressName: { fontSize: 10, flex: 1, width: 190, color: 'gray', textTransform: 'capitalize' },
+    progressName: { fontSize: 10, flex: 1, width: 190, color: 'gray', textTransform: 'capitalize', marginRight: -5 },
     progressText: { alignSelf: 'flex-start', textTransform: 'lowercase' },
     progressView: { flex: 1, height: 20, justifyContent: 'center', backgroundColor: 'white', borderRadius: 10, borderWidth: 1, borderColor: '#000' },
     progress: { marginLeft: 2, height: 15, borderRadius: 10, justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }

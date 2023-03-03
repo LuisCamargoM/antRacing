@@ -28,6 +28,7 @@ const ItemsList: React.FC = () => {
     const inProgress = useSelector(selectInProgressStatus);
     const completed = useSelector(selectCompletedStatus);
     const counter = useSelector(selectCounter);
+    let count = 0;
 
     const { emptyView, refetchButtonView, refetchButtonText } = styles;
     interface Item {
@@ -44,8 +45,9 @@ const ItemsList: React.FC = () => {
             const responseCallback = (likelihoodOfAntWinning: number) => {
                 actualState[i].likelihoodOfAntWinning = likelihoodOfAntWinning;
                 actualState[i].statusFetched = 'Calculated';
+                count++;
                 dispatch(setAntsInfo(actualState))
-                dispatch(setCounterIncrement({ counter: i + 1 }));
+                dispatch(setCounterIncrement({ counter: count + 1 }));
             };
             modelService.getAntWinLikelihoood()(responseCallback);
         })
@@ -65,7 +67,7 @@ const ItemsList: React.FC = () => {
                     <AntText label={item?.statusFetched} style={itemImageLabel} />
                 </View>
                 <View>
-                    <ProgressBarItem name={item?.name} timeValue={item?.likelihoodOfAntWinning} colorItem={item?.color} />
+                    <ProgressBarItem name={item?.name} timeValue={(item?.likelihoodOfAntWinning?.toFixed(4))?.toString()} colorItem={item?.color} />
                 </View>
             </View>
         )
