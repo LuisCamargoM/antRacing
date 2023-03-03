@@ -27,9 +27,9 @@ const ProgressBarItem = ({ colorItem, name, timeValue }: ProgressItem): JSX.Elem
 
     React.useEffect(() => {
         animateProgress();
-        setProgress((((timeValue * 100) ?? 0)))
+        setProgress((((timeValue) ?? 0) * 100))
         return () => { };
-    }, [progress])
+    }, [progress,timeValue])
 
     return (
         <ContainerProgressBarItem>

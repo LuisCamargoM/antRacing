@@ -16,6 +16,7 @@ interface InitialState {
     ants: AntState[],
     inProgress: boolean,
     completed: boolean,
+    counter: number,
     status: string
 }
 
@@ -29,6 +30,7 @@ const initialState = {
     ants: {},
     inProgress: false,
     completed: false,
+    counter: 0,
     status: 'Not initiate'
 }
 
@@ -38,6 +40,16 @@ const antsSlice = createSlice({
     reducers: {
         setAntsInfo: (state, action) => {
             state.ants = action.payload;
+            if (state.counter >= 5) {
+                state.completed = true;
+                state.inProgress = false;
+                state.status = 'Calculation Finished!'
+            } else {
+                if (state.counter !== 0 && state.counter > 0 && state.counter < 5) {
+                    state.inProgress = true;
+                    state.status = 'Calculating ....'
+                }
+            }
         },
         setDataInProgress: (state) => {
             state.inProgress = true;
@@ -51,14 +63,18 @@ const antsSlice = createSlice({
         setDataStatus: (state, action) => {
             state.status = action.payload.message;
         },
+        setCounterIncrement: (state, action) => {
+            state.counter = action.payload.counter;
+        },
     }
 });
 
-export const { setAntsInfo, setDataInProgress, setDataCompleted, setDataStatus } = antsSlice.actions;
+export const { setAntsInfo, setDataInProgress, setDataCompleted, setDataStatus, setCounterIncrement } = antsSlice.actions;
 
 export const selectAnts = (state: AntsSlice) => state.antsData.ants;
 export const selectInProgressStatus = (state: AntsSlice) => state.antsData.inProgress;
 export const selectCompletedStatus = (state: AntsSlice) => state.antsData.completed;
 export const selectDataStatusMessage = (state: AntsSlice) => state.antsData.status;
+export const selectCounter = (state: AntsSlice) => state.antsData.counter;
 
 export default antsSlice.reducer;

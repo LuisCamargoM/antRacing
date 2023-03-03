@@ -8,11 +8,12 @@ import { Container, ListContainer, StatusDataView } from './styles';
 
 const Statistics: React.FC = () => {
     const { lighterText } = styles;
-    const message = useSelector(selectDataStatusMessage); //'Not Finished yet!' 
+    const message = useSelector(selectDataStatusMessage);
+    const completed = useSelector(selectCompletedStatus);
     return (
         <Container>
             <StatusDataView>
-                <AntText label='Calculation Status' style={lighterText} />
+                <AntText label='Calculation Status: ' style={lighterText} />
                 <AntText label={message} style={{ textTransform: "capitalize" }} />
             </StatusDataView>
             <ListContainer>

@@ -10,53 +10,50 @@ import { useScreenSize } from '../../../../hooks/useScreenSize';
 import { ContainerItemList } from './styles';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AntState, selectAnts, selectCompletedStatus, selectInProgressStatus, setAntsInfo, setDataCompleted, setDataInProgress } from '../../../../store/slices/antsSlice';
+import { AntState, selectAnts, selectCompletedStatus, selectCounter, selectInProgressStatus, setAntsInfo, setCounterIncrement, setDataCompleted, setDataInProgress } from '../../../../store/slices/antsSlice';
 
 import ProgressBarItem from '../ProgressBarItem/ProgressBarItem';
 import { modelService } from '../../../../services/modelService';
+import { useFetchContext } from '../../../../hooks/useFetchContext';
 
 const { width, scale } = useScreenSize();
 
 const ItemsList: React.FC = () => {
     const [antsData, setAntsData] = React.useState<AntState[]>();
     const [loading, setLoading] = React.useState<boolean>(false);
+    const { restartProcess } = useFetchContext();
 
     const dispatch = useDispatch();
     const ants = useSelector(selectAnts);
     const inProgress = useSelector(selectInProgressStatus);
     const completed = useSelector(selectCompletedStatus);
+    const counter = useSelector(selectCounter);
 
+    const { emptyView, refetchButtonView, refetchButtonText } = styles;
     interface Item {
         item: AntState,
         index: number
     }
 
-    const isCalculating = (): boolean => inProgress && !completed;
+    const isCalculating = (): boolean => !completed && inProgress;
 
     const calculateOdds = (actualState: AntState[]) => {
         actualState.map((ant: AntState, i: number) => {
             actualState[i].statusFetched = 'Calculating...';
-            dispatch(setAntsInfo(actualState));
+            dispatch(setAntsInfo(actualState))
             const responseCallback = (likelihoodOfAntWinning: number) => {
                 actualState[i].likelihoodOfAntWinning = likelihoodOfAntWinning;
                 actualState[i].statusFetched = 'Calculated';
                 dispatch(setAntsInfo(actualState))
-                setAntsData(actualState)
+                dispatch(setCounterIncrement({ counter: i + 1 }));
             };
             modelService.getAntWinLikelihoood()(responseCallback);
         })
     }
 
-    const startCalculation = async () => {
-        dispatch(setDataInProgress())
-        calculateOdds(ants);
-        dispatch(setDataCompleted())
-    }
     const handleRace = async () => {
-        await startCalculation().then(() => {
-            dispatch(setDataCompleted)
-        })
-
+        dispatch(setDataInProgress());
+        calculateOdds(ants);
     };
 
     const Item = ({ item, index }: Item) => {
@@ -75,12 +72,12 @@ const ItemsList: React.FC = () => {
     }
 
     const Footer = () => {
-        const { footerView, buttonStyle, textButtonStyle } = styles;
+        const { footerView, buttonStyle, textButtonStyle, } = styles;
         return (
             <View style={footerView}>
                 <AntButton
                     onPress={handleRace}
-                    label={isCalculating() ? 'Running' : 'START RACING'}
+                    label={loading ? 'Running ...' : 'START RACING'}
                     styleLabel={textButtonStyle}
                     styleButton={buttonStyle}
                     loading={isCalculating()}
@@ -88,17 +85,13 @@ const ItemsList: React.FC = () => {
             </View>
         )
     }
+    React.useEffect(() => {
+        if (Object.keys(ants).length > 0) {
+            const orderList = ants?.slice().sort(compare);
+            setAntsData(orderList)
+        }
+    }, [ants, counter]);
 
-
-
-    React.useEffect
-        (() => {
-            if (ants.length) {
-                let ascending = ants.slice().sort(compare);
-                setAntsData(ascending)
-            }
-
-        }, [ants]);
 
     return (
         <ContainerItemList>
@@ -114,7 +107,10 @@ const ItemsList: React.FC = () => {
                             ListFooterComponent={Footer}
                         />
                     ) : (
-                        <AntText label='Empty data' />
+                        <View style={emptyView}>
+                            <AntText label='Empty data...' />
+                            <AntButton styleLabel={refetchButtonText} label='Restart Fetching!' onPress={() => restartProcess()} styleButton={refetchButtonView} />
+                        </View>
                     )
             }
         </ContainerItemList>
@@ -131,6 +127,10 @@ const styles = StyleSheet.create({
     buttonStyle: { height: 40, backgroundColor: '#000', width: '80%', borderRadius: 10 },
     textButtonStyle: { color: '#fff' },
     footerView: { justifyContent: 'center', alignItems: 'center', marginTop: 20 },
+
+    emptyView: { justifyContent: 'center', flexDirection: 'column', alignItems: 'center' },
+    refetchButtonView: { justifyContent: 'center', alignItems: 'center', width: '50%', borderRadius: 10, marginVertical: 10, height: 40, backgroundColor: '#000' },
+    refetchButtonText: { fontSize: 14, color: '#fff' },
 })
 
 export default ItemsList;
