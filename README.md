@@ -30,12 +30,12 @@
 
 ## How to run App
 
-## Open your Terminal:
+### Open your Terminal:
 ```
     git clone https://github.com/LuisCamargoM/antRacing.git
 ```
 
-## In the root folder:
+### In the root folder:
 ```
     1 - yarn or npm install
     2 - cd ios && pod install && cd ..
