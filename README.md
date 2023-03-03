@@ -1,4 +1,4 @@
-# Ant Racing App [Figma](https://www.figma.com/file/wSpLoTDkOyUVw04s796IbO/Ant-Layout-Base?node-id=0%3A1&t=misXAopbyDZcVx4y-1)
+# [Ant Racing App](https://www.figma.com/file/wSpLoTDkOyUVw04s796IbO/Ant-Layout-Base?node-id=0%3A1&t=misXAopbyDZcVx4y-1)
 
 
 # MainStack 
