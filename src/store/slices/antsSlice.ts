@@ -31,7 +31,7 @@ const initialState = {
     inProgress: false,
     completed: false,
     counter: 0,
-    status: 'Not initiate'
+    status: 'Not yet run!'
 }
 
 const antsSlice = createSlice({
@@ -43,23 +43,23 @@ const antsSlice = createSlice({
             if (state.counter === 4) {
                 state.completed = true;
                 state.inProgress = false;
-                state.status = 'Calculation Finished!'
+                state.status = 'All Calculated!'
             } else {
                 if (state.counter !== 0 && state.counter < 5) {
                     state.inProgress = true;
                     state.completed = false;
-                    state.status = 'Calculating ....'
+                    state.status = 'In Progress ....'
                 }
             }
         },
         setDataInProgress: (state) => {
             state.inProgress = true;
-            state.status = 'Calculating ....'
+            state.status = 'In Progress ....'
         },
         setDataCompleted: (state) => {
             state.completed = true;
             state.inProgress = false;
-            state.status = 'Calculation Finished!'
+            state.status = 'All Calculated!'
         },
         setDataStatus: (state, action) => {
             state.status = action.payload.message;
